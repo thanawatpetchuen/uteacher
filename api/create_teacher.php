@@ -10,7 +10,7 @@ if (isset($_POST)) {
 $sql = "INSERT INTO uteacher (UteacherNAME,RANK,Education)
 	 VALUES ('$teacher_name','$rank','$education')";
 if (mysqli_query($conn, $sql)) {
-  header( "location: /" );
+  header("location: /");
 } else {
   echo "Error: " . $sql . "
 " . mysqli_error($conn);

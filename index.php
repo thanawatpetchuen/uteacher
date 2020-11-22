@@ -27,6 +27,7 @@
 						<th>วุฒิการศึกษา</th>
 						<th>หลักสูตร</th>
 						<th>สาขาวิชา</th>
+						<th></th>
 					</tr>
 				</thead>
 				<tbody>
@@ -36,15 +37,23 @@
 	</div>
 	<script>
 		$(document).ready(function() {
-			const data = [{
-				rank: "RANK",
-				name: "NAME",
-				education: "UNIVERSITY",
-				course: "001",
-				facultyId: "002"
-			}]
+			function deleteTeacher(id) {
+				$.ajax({
+					method: "POST",
+					url: "/api/delete_teacher.php",
+					data: {
+						id
+					},
+					success: function() {
+						window.location.reload()
+					},
+					error: function() {
+						alert("ลบไม่สำเร็จ")
+					}
+				})
+			}
 
-			$('#table_id').DataTable({
+			$table = $('#table_id').DataTable({
 				ajax: {
 					url: "/api/teacher.php",
 					dataSrc: "",
@@ -64,8 +73,20 @@
 					{
 						data: 'FacultyID'
 					},
+					{
+						data: null,
+						render: function(data, type, row) {
+							return '<button class="btn btn-danger">ลบ</button>';
+						}
+					}
 				]
 			});
+
+			$table.on('click', 'button', function() {
+				var RowIndex = $(this).closest('tr');
+        var data = $table.row(RowIndex).data();
+				deleteTeacher(data.UteacherID)
+			})
 		});
 	</script>
 </body>
